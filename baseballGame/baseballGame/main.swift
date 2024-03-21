@@ -3,14 +3,11 @@
 //  baseballGame
 //
 //  Created by 김준철 on 3/14/24.
-//
-//1. 게임 시작하기 2. 게임 기록 보기 3. 종료하기
-let game = BaseballGame()
-game.start() // BaseballGame 인스턴스를 만들고 start 함수를 구현하기
-
 
 // BaseballGame.swift 파일 생성
 class BaseballGame {
+    var     attepmts: Int = 0 //시도 횟수 저장할 프로퍼티
+    
     func start(){
         var userInput: [Int]?
         let answer = makeAnswer()
@@ -21,11 +18,8 @@ class BaseballGame {
             return Array(randomNumbers)
             
         }
-        /*print("입력한 숫자: \(userInput!)")
         
-        let result = compare(answer: answer, userInput: userInput!)
-        print("스트라이크: \(result.strike), 볼: \(result.ball)")
-        */
+        print("Game Start!!!")
         
         while true {
                     repeat {
@@ -34,20 +28,33 @@ class BaseballGame {
                     
                     print("입력한 숫자: \(userInput!)")
                     
+            
+                    attepmts += 1 //시도 횟수
+            
                     let result = compare(answer: answer, userInput: userInput!)
                     print("스트라이크: \(result.strike), 볼: \(result.ball)")
                     
                     if result.strike == 3 {
                         print("정답입니다!")
-                        break // 루프를 빠져나옵니다.
+                        return // 함수 종료 원래는 break였음루프를 빠져나옵니다.
                     }
                 }
             }
+    func showAttempts(){
+        print("시도횟수는 \(attepmts)번 입니다.")
+    }
+    //게임 재시작하면 초기화
+    func resetAttempts(){
+        attepmts = 0
+    }
+    
+    
     //사용자 입력 올바른 형식 확인 skrike 3이면 break로 while문 루프 종료
     func isUserInputValid(_ userInput: [Int]) -> Bool {
         return userInput.count == 3 && Set(userInput).count == 3
     }
 
+    
     func getUserInput() -> [Int]? {
         
         print("세 자리의 숫자를 입력하세요:")
@@ -80,4 +87,28 @@ class BaseballGame {
         
         return (strike, ball)
     }}
+
+
+
+print("야구게임입니다. 숫자를 입력하고 엔터를 눌러주세요 1. 게임시작 2. 전 게임의 시도횟수 보기 3. 게임 끝내기")
+
+while let inputNumber = readLine(), let choice = Int(inputNumber){
+    switch choice{
+    case 1:
+        let game = BaseballGame()
+        game.start()
+        game.resetAttempts() // 게임을 새로 시작하면 그전 기록 리셋
+        
+    case 2:
+        let game = BaseballGame()
+        game.showAttempts()
+    case 3:
+        print("프로그램 종료")
+        exit(0)
+    default:
+        print("잘못된 입력입니다. 1,2,3 골라주세요")
+    }
+}
+
+
 
